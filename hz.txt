@@ -1,0 +1,150 @@
+//import okhttp3.*;
+//import org.jsoup.Jsoup;
+//import org.jsoup.nodes.Document;
+//import org.jsoup.nodes.Element;
+//import org.jsoup.select.Elements;
+//
+//import java.io.*;
+//import java.util.HashSet;
+//import java.util.Set;
+//
+//public class KufarScraper {
+//
+//    private static final String URL = "https://re.kufar.by/l/minsk/snyat/komnatu-dolgosrochno?cur=BYR&gbx=b%3A27.077931849609367%2C53.642394996031655%2C28.377065150390607%2C54.12191339443684&size=30";
+//
+//    //  private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3";
+//    private static final String TELEGRAM_API_URL = "https://api.telegram.org/bot";
+//    private static final String BOT_TOKEN = "7197956065:AAFSPJJhviSiGDtdHwY3dw-LrpCgXpsqzIw"; // Ваш токен бота
+//    private static final String CHAT_ID = "530471423"; // Ваш chat ID
+//    private static final String FILE_PATH = "processed_locations.txt";
+//    String title;
+//    String price;
+//    String location;
+//    String link;
+//
+//    private static Set<String> processedLocations = new HashSet<>();
+//
+//
+//    public static void main(String[] args) {
+//        while (true) {
+//            try {
+//                System.out.println("Starting scraping process...");
+//                scrapeKufar();
+//                System.out.println("Scraping completed, sleeping for 30 seconds...");
+//                Thread.sleep(10000); // Ждать 60 секунд перед следующей проверкой
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+////    private void loadProcessedLocations() {
+////        File file = new File(FILE_PATH);
+////        if (file.exists()) {
+////            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+////                String line;
+////                while ((line = reader.readLine()) != null) {
+////                    processedLocations.add(line.trim());
+////                      sendTelegramMessage("Новое объявление о сдаче комнаты", "Title: " + title + "\nРасположение: " + location + "\nЦена:" + price + link);
+////
+////
+////                }
+////            } catch (IOException e) {
+////                System.err.println("Failed to load processed locations: " + e.getMessage());
+////            }
+////        }
+////    }
+//
+//  //  private static void saveProcessedLocations() {
+//
+//  //  }
+//
+//
+//    public static void scrapeKufar() throws IOException {
+//        Document doc = Jsoup.connect(URL).get();
+//        System.out.println("HTML content loaded successfully!");
+//
+//        Elements ads = doc.select("#content > div.styles_ads__QM8HX > div.styles_wrapper__vfncA > div > section:nth-child(1)");
+//
+//        System.out.println("Found " + ads.size() + " advertisements.");
+//
+//        boolean newAdsFound = false;
+//
+//        for (Element ad : ads) {
+//            String title = ad.select(".styles_parameters__7zKlL").text();
+//            String price = ad.select(".styles_price__byr__lLSfd").text();
+//            String location = ad.select(".styles_address__l6Qe_").text();
+//            String link = ad.select("a").attr("href");
+//
+//
+//
+//                System.out.println("New advertisement found: " + title);
+//              //  sendTelegramMessage("Новое объявление о сдаче комнаты", "Title: " + title + "\nРасположение: " + location + "\nЦена:" + price + link);
+//            File file = new File(FILE_PATH);
+//            if (file.exists()) {
+//                try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+//                    String line;
+//                    while ((line = reader.readLine()) != null) {
+//                        processedLocations.add(line.trim());
+//                        sendTelegramMessage("Новое объявление о сдаче комнаты", "Title: " + title + "\nРасположение: " + location + "\nЦена:" + price + link);
+//
+//
+//                    }
+//                } catch (IOException e) {
+//                    System.err.println("Failed to load processed locations: " + e.getMessage());
+//                }
+//            }
+//
+//            try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+//
+//                // for (String location1 : processedLocations) {
+//                    writer.write(location);
+//                    writer.newLine();
+//                //}
+//            } catch (IOException e) {
+//                System.err.println("Failed to save processed locations: " + e.getMessage());
+//            }
+//
+//
+//
+//                // newAdsFound = true;
+//           // saveProcessedLocations();
+//
+//         //  if (!newAdsFound) {
+//             //  System.out.println("No new ads found.");
+//
+//     //   }
+//
+//        }
+//
+//    }
+//
+//
+//    private static void sendTelegramMessage(String subject, String content) {
+//        OkHttpClient client = new OkHttpClient();
+//        String url = TELEGRAM_API_URL + BOT_TOKEN + "/sendMessage";
+//        String message = subject + "\n" + content;
+//
+//        RequestBody body = new FormBody.Builder()
+//                .add("chat_id", CHAT_ID)
+//                .add("text", message)
+//                .build();
+//
+//        Request request = new Request.Builder()
+//                .url(url)
+//                .post(body)
+//                .build();
+//
+//        try {
+//            Response response = client.newCall(request).execute();
+//            if (response.isSuccessful()) {
+//                System.out.println("Telegram message sent successfully to chat ID " + CHAT_ID);
+//            } else {
+//                System.err.println("Failed to send Telegram message: " + response.message());
+//            }
+//        } catch (IOException e) {
+//            System.err.println("Failed to send Telegram message: " + e.getMessage());
+//            e.printStackTrace();
+//        }
+//    }
+//}
